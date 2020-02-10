@@ -25,7 +25,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final FocusNode _focusNode = FocusNode();
+  final FocusNode _address = FocusNode(), _name = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +41,22 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text('可以测试ListView滚动的情况'),
             ),
           ),
-          Input(
-            focusNode: _focusNode,
-            decoration: InputDecoration(hintText: '地址', labelText: '地址'),
+          FocusWidget(
+            focusNode: _address,
+            child: SizedBox(
+              width: 50,
+              child: TextField(
+                focusNode: _address,
+                decoration: InputDecoration(hintText: '地址', labelText: '地址'),
+              ),
+            ),
           ),
-          Input(
-            decoration: InputDecoration(hintText: '姓名', labelText: '姓名'),
+          FocusWidget(
+            focusNode: _name,
+            child: TextField(
+              focusNode: _name,
+              decoration: InputDecoration(hintText: '姓名', labelText: '姓名'),
+            ),
           ),
           SizedBox(
             height: 1000,
@@ -56,11 +66,11 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         child: Text('焦点'),
         onPressed: () {
-          print('变换焦点 ${_focusNode.hasFocus}');
-          if (_focusNode.hasFocus)
-            _focusNode.unfocus();
+          print('变换焦点 ${_address.hasFocus}');
+          if (_address.hasFocus)
+            _address.unfocus();
           else
-            FocusScope.of(context).requestFocus(_focusNode);
+            FocusScope.of(context).requestFocus(_address);
         },
       ),
     );

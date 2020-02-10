@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 
-class Input extends StatefulWidget {
-  final TextEditingController controller;
-  final InputDecoration decoration;
+class FocusWidget extends StatefulWidget {
   final FocusNode focusNode;
+  final Widget child;
 
-  const Input({
+  const FocusWidget({
     Key key,
-    this.controller,
-    this.decoration,
-    this.focusNode,
-  }) : super(key: key);
+    @required this.focusNode,
+    this.child,
+  })  : assert(focusNode != null),
+        super(key: key);
 
   @override
-  _Input createState() => _Input();
+  _FocusWidget createState() => _FocusWidget();
 }
 
-class _Input extends State<Input> {
+class _FocusWidget extends State<FocusWidget> {
   FocusNode _focusNode;
   OverlayEntry _overlayEntry;
 
@@ -74,10 +73,6 @@ class _Input extends State<Input> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: widget.controller,
-      decoration: widget.decoration,
-      focusNode: _focusNode,
-    );
+    return widget.child;
   }
 }
