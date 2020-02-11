@@ -22,4 +22,4 @@
 
 ### 录屏 / Screen Recording
 
-![](https://github.com/gzlock/images/blob/master/focus_widget/1.gif?raw=true)
+![gif](https://github.com/gzlock/images/blob/master/focus_widget/1.gif?raw=true)
