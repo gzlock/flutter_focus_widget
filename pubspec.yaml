@@ -1,8 +1,7 @@
 name: focus_widget
 description: A focusable and blurable widget.
 version: 1.0.0
-author: gzlock88@gmail.com
-homepage: https://github.com/gzlock/flutter_input
+homepage: https://github.com/gzlock/flutter_focus_widget
 
 environment:
   sdk: ">=2.1.0 <3.0.0"

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:focus_widget/focus_widget.dart';
 
 void main() => runApp(MyApp());
@@ -11,9 +12,53 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale.fromSubtags(languageCode: 'zh'),
+        Locale.fromSubtags(languageCode: 'en'),
+      ],
+      home: MyHomePage(title: 'Focus Widget Demo Page'),
     );
   }
+}
+
+class DemoLocalizations {
+  DemoLocalizations(this.locale);
+
+  final String locale;
+
+  static DemoLocalizations of(BuildContext context) {
+    return DemoLocalizations(Localizations.localeOf(context).languageCode);
+  }
+
+  static Map<String, Map<String, String>> _localizedValues = {
+    'en': {
+      'tips': 'When the TextField focused，\n'
+          '1. Tap outside place of the TextField, will lost focus\n'
+          '2. Scroll the ListView, will lost focus\n'
+          '3. The FocusWidget at the Drawer had the same effect',
+      'address': 'Address',
+      'name': 'name',
+    },
+    'zh': {
+      'tips': '当输入框获得焦点后，\n'
+          '1. 点击输入框外的位置会失去焦点\n'
+          '2. 滚动列表会失去焦点\n'
+          '3. 在Drawer中的FocusWidget也一样有效',
+      'address': '地址',
+      'name': '名称',
+    },
+  };
+
+  String get address => _localizedValues[locale]['address'];
+
+  String get name => _localizedValues[locale]['name'];
+
+  String get tips => _localizedValues[locale]['tips'];
 }
 
 class MyHomePage extends StatefulWidget {
@@ -25,16 +70,33 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final FocusNode _address = FocusNode(), _name = FocusNode();
+  final FocusNode _address = FocusNode(),
+      _name = FocusNode(),
+      _drawerNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
-    Locale myLocale = Localizations.localeOf(context);
-    String name, address;
-    print('${myLocale.languageCode} ${myLocale.countryCode}');
+    final language = DemoLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+      ),
+      drawer: Drawer(
+        child: SafeArea(
+          child: ListView(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            children: [
+              FocusWidget(
+                focusNode: _drawerNode,
+                child: TextField(
+                  focusNode: _drawerNode,
+                  decoration:
+                      InputDecoration(hintText: 'Input', labelText: 'Input'),
+                ),
+              )
+            ],
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -42,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(
               height: 100,
               child: Center(
-                child: Text('可以测试ListView滚动的情况'),
+                child: Text(language.tips),
               ),
             ),
             Container(
@@ -51,7 +113,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 focusNode: _address,
                 child: TextField(
                   focusNode: _address,
-                  decoration: InputDecoration(hintText: '地址', labelText: '地址'),
+                  decoration: InputDecoration(
+                      hintText: language.address, labelText: language.address),
                 ),
               ),
             ),
@@ -59,7 +122,8 @@ class _MyHomePageState extends State<MyHomePage> {
               focusNode: _name,
               child: TextField(
                 focusNode: _name,
-                decoration: InputDecoration(hintText: '姓名', labelText: '姓名'),
+                decoration: InputDecoration(
+                    hintText: language.name, labelText: language.name),
               ),
             ),
             SizedBox(
@@ -67,16 +131,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Text('焦点'),
-        onPressed: () {
-          print('变换焦点 ${_address.hasFocus}');
-          if (_address.hasFocus)
-            _address.unfocus();
-          else
-            FocusScope.of(context).requestFocus(_address);
-        },
       ),
     );
   }

@@ -12,12 +12,13 @@ class FocusWidget extends StatefulWidget {
         super(key: key);
 
   @override
-  _FocusWidget createState() => _FocusWidget();
+  FocusWidgetState createState() => FocusWidgetState();
 }
 
-class _FocusWidget extends State<FocusWidget> {
+class FocusWidgetState extends State<FocusWidget> {
   FocusNode _focusNode;
   OverlayEntry _overlayEntry;
+  Offset topLeft, bottomRight;
 
   @override
   void initState() {
@@ -32,15 +33,20 @@ class _FocusWidget extends State<FocusWidget> {
     super.dispose();
   }
 
+  void update() {
+    if (!_focusNode.hasFocus) return;
+    final RenderBox renderBox = context.findRenderObject();
+    final size = renderBox.size;
+    topLeft = renderBox.localToGlobal(Offset.zero);
+    bottomRight = topLeft + Offset(size.width, size.height);
+  }
+
   void _focusEvent() {
     if (_focusNode.hasFocus) {
-      final RenderBox renderBox = context.findRenderObject();
-      final size = renderBox.size;
-      final topLeft = renderBox.localToGlobal(Offset.zero);
-      final bottomRight = topLeft + Offset(size.width, size.height);
-      print('focus ${_focusNode.hasFocus} \n'
-          'topLeft:$topLeft \n'
-          'bottomRight: $bottomRight');
+      update();
+//      print('focus ${_focusNode.hasFocus} \n'
+//          'topLeft:$topLeft \n'
+//          'bottomRight: $bottomRight');
       _overlayEntry = new OverlayEntry(
         builder: (context) {
           return Stack(
@@ -55,9 +61,9 @@ class _FocusWidget extends State<FocusWidget> {
                       e.position.dx >= bottomRight.dx;
                   final overY = e.position.dy <= topLeft.dy ||
                       e.position.dy >= bottomRight.dy;
-                  print('dx: $overX \ndy: $overY');
+                  // print('dx: $overX \ndy: $overY');
                   if (overX || overY) {
-                    print('超出');
+                    // print('超出');
                     _focusNode?.unfocus();
                   }
                 },
