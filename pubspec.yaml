@@ -1,5 +1,8 @@
 name: focus_widget
-description: A focusable and blurable widget.
+description: When the FocusWidget has focus
+  Trigger the PointerDown event outside the FocusWidget area
+  Will make FocusWidget lose focus
+  and trigger the FocusNode listener
 version: 1.0.0
 homepage: https://github.com/gzlock/flutter_focus_widget
 

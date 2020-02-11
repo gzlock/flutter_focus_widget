@@ -37,18 +37,18 @@ class DemoLocalizations {
 
   static Map<String, Map<String, String>> _localizedValues = {
     'en': {
-      'tips': 'When the TextField focused，\n'
-          '1. Tap outside place of the TextField, will lost focus\n'
-          '2. Scroll the ListView, will lost focus\n'
-          '3. The FocusWidget at the Drawer had the same effect',
+      'tips': 'When the FocusWidget has focus,\n'
+          'Trigger the PointerDown event outside the FocusWidget area\n'
+          'Will make FocusWidget lose focus\n'
+          'and trigger the FocusNode listener',
       'address': 'Address',
       'name': 'name',
     },
     'zh': {
       'tips': '当输入框获得焦点后，\n'
-          '1. 点击输入框外的位置会失去焦点\n'
-          '2. 滚动列表会失去焦点\n'
-          '3. 在Drawer中的FocusWidget也一样有效',
+          '在FocusWidget域外触发PointerDown\n'
+          '会让FocusWidget失去焦点'
+          '并且触发FocusNode的listener',
       'address': '地址',
       'name': '名称',
     },
@@ -99,7 +99,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       body: SingleChildScrollView(
+        padding: EdgeInsets.only(left: 10, right: 10),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
               height: 100,
