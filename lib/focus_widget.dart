@@ -28,7 +28,7 @@ class _FocusWidget extends State<FocusWidget> {
 
   @override
   void dispose() {
-    _focusNode.dispose();
+    _focusNode.removeListener(_focusEvent);
     super.dispose();
   }
 
@@ -38,9 +38,9 @@ class _FocusWidget extends State<FocusWidget> {
       final size = renderBox.size;
       final topLeft = renderBox.localToGlobal(Offset.zero);
       final bottomRight = topLeft + Offset(size.width, size.height);
-//      print('focus ${_focusNode.hasFocus} \n'
-//          'topLeft:$topLeft \n'
-//          'bottomRight: $bottomRight');
+      print('focus ${_focusNode.hasFocus} \n'
+          'topLeft:$topLeft \n'
+          'bottomRight: $bottomRight');
       _overlayEntry = new OverlayEntry(
         builder: (context) {
           return Stack(
@@ -55,8 +55,9 @@ class _FocusWidget extends State<FocusWidget> {
                       e.position.dx >= bottomRight.dx;
                   final overY = e.position.dy <= topLeft.dy ||
                       e.position.dy >= bottomRight.dy;
-                  if (overY || overY) {
-                    print('超出 $overX $overY');
+                  print('dx: $overX \ndy: $overY');
+                  if (overX || overY) {
+                    print('超出');
                     _focusNode?.unfocus();
                   }
                 },

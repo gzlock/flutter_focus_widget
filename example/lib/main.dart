@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:input/input.dart';
+import 'package:focus_widget/focus_widget.dart';
 
 void main() => runApp(MyApp());
 
@@ -29,39 +29,44 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Locale myLocale = Localizations.localeOf(context);
+    String name, address;
+    print('${myLocale.languageCode} ${myLocale.countryCode}');
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: ListView(
-        children: [
-          SizedBox(
-            height: 100,
-            child: Center(
-              child: Text('可以测试ListView滚动的情况'),
-            ),
-          ),
-          FocusWidget(
-            focusNode: _address,
-            child: SizedBox(
-              width: 50,
-              child: TextField(
-                focusNode: _address,
-                decoration: InputDecoration(hintText: '地址', labelText: '地址'),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 100,
+              child: Center(
+                child: Text('可以测试ListView滚动的情况'),
               ),
             ),
-          ),
-          FocusWidget(
-            focusNode: _name,
-            child: TextField(
-              focusNode: _name,
-              decoration: InputDecoration(hintText: '姓名', labelText: '姓名'),
+            Container(
+              width: 100,
+              child: FocusWidget(
+                focusNode: _address,
+                child: TextField(
+                  focusNode: _address,
+                  decoration: InputDecoration(hintText: '地址', labelText: '地址'),
+                ),
+              ),
             ),
-          ),
-          SizedBox(
-            height: 1000,
-          ),
-        ],
+            FocusWidget(
+              focusNode: _name,
+              child: TextField(
+                focusNode: _name,
+                decoration: InputDecoration(hintText: '姓名', labelText: '姓名'),
+              ),
+            ),
+            SizedBox(
+              height: 1000,
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Text('焦点'),

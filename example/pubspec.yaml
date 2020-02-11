@@ -1,5 +1,5 @@
-name: a_input_widget_demo
-description: A demo for input widget.
+name: a_focus_widget_demo
+description: A demo for focus widget.
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -23,7 +23,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-  input:
+  focus_widget:
     path: ../
 
 dev_dependencies:

@@ -1,6 +1,5 @@
-name: input
-description: A focusable and blurable TextField widget.
-  100% same usage as TextField
+name: focus_widget
+description: A focusable and blurable widget.
 version: 1.0.0
 author: gzlock88@gmail.com
 homepage: https://github.com/gzlock/flutter_input
