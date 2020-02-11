@@ -20,5 +20,6 @@
 
     And trigger the FocusNode listener
 
-录屏 / Screen Recording
+### 录屏 / Screen Recording
+
 ![](https://github.com/gzlock/images/blob/master/focus_widget/1.gif?raw=true)
