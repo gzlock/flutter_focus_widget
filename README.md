@@ -1,6 +1,6 @@
 # Flutter Focus Widget
 
-### 一个可以让FocusNode获得焦点和失去焦点的Widget
+### 一个可以让FocusNode失去焦点的Widget
 ### A focusable and blurable widget of use the FocusNode.
 
 - 当FocusWidget获得焦点后
