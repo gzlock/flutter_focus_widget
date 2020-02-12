@@ -70,9 +70,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final FocusNode _address = FocusNode(),
-      _name = FocusNode(),
-      _drawerNode = FocusNode();
+  final FocusNode _address = FocusNode(), _name = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -86,12 +84,15 @@ class _MyHomePageState extends State<MyHomePage> {
           child: ListView(
             padding: EdgeInsets.only(left: 10, right: 10),
             children: [
-              FocusWidget(
-                focusNode: _drawerNode,
-                child: TextField(
-                  focusNode: _drawerNode,
-                  decoration:
-                      InputDecoration(hintText: 'Input', labelText: 'Input'),
+              FocusWidget.builder(
+                context,
+                (ctx, focusNode) => TextField(
+                  focusNode: focusNode,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    hintText: 'Input',
+                    labelText: 'Input',
+                  ),
                 ),
               )
             ],
