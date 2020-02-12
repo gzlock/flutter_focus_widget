@@ -6,19 +6,15 @@
 
 - 当FocusWidget获得焦点后
 
-    在FocusWidget域外触发PointerDown
+    在FocusWidget区域外触发PointerDown事件
 
-    会让FocusWidget失去焦点
+    会调用FocusNode.unfocus()并且触发FocusNode的listener
 
-    并且触发FocusNode的listener
+- When the FocusWidget had focus
 
-- When the FocusWidget has focus
+    Tap this FocusWidget outside area
 
-    Trigger the PointerDown event outside the FocusWidget area
-
-    Will make FocusWidget lose focus
-
-    And trigger the FocusNode listener
+    Will call the FocusNode's unfocus method and trigger the FocusNode's listener
 
 ```dart
 class _MyHomePageState extends State<MyHomePage> {

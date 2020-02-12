@@ -1,3 +1,5 @@
+## [1.0.1+2] - Updated README.md
+
 ## [1.0.1+1] - Updated README.md
 
 ## [1.0.1] - Add a static method named 'builder'
