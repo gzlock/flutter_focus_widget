@@ -3,13 +3,14 @@ description: When the FocusWidget has focus
   Trigger the PointerDown event outside the FocusWidget area
   Will make FocusWidget lose focus
   and trigger the FocusNode listener
-version: 1.0.1+2
+version: 1.0.2
 homepage: https://github.com/gzlock/flutter_focus_widget
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
+  keyboard_visibility: any
   flutter:
     sdk: flutter
 
