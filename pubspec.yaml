@@ -10,7 +10,6 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
-  keyboard_visibility: any
   flutter:
     sdk: flutter
 

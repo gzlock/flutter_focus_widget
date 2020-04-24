@@ -10,14 +10,12 @@ class FocusWidget extends StatefulWidget {
   final FocusNode focusNode;
   final Widget child;
   final OnLostFocus onLostFocus;
-  final bool justHideKeyboard;
   final bool showFocusArea;
 
   const FocusWidget({
     Key key,
     @required this.child,
     @required this.focusNode,
-    this.justHideKeyboard = false,
     this.showFocusArea = false,
     this.onLostFocus,
   })  : assert(child != null && focusNode != null),
@@ -29,14 +27,12 @@ class FocusWidget extends StatefulWidget {
   static FocusWidget builder(
     BuildContext context, {
     @required FocusNodeBuilder builder,
-    justHideKeyboard = false,
     showFocusArea = false,
     OnLostFocus onLostFocus,
   }) {
     final focusNode = FocusNode();
     return FocusWidget(
       focusNode: focusNode,
-      justHideKeyboard: justHideKeyboard,
       showFocusArea: showFocusArea,
       onLostFocus: onLostFocus,
       child: builder(
@@ -81,29 +77,21 @@ class FocusWidgetState extends State<FocusWidget> {
   void _createOverlay() {
     _removeOverlay();
     if (widget.focusNode.hasFocus) {
-//      print('focus ${_focusNode.hasFocus} \n'
-//          'topLeft:$topLeft \n'
-//          'bottomRight: $bottomRight');
       bool canLostFocus = true;
       if (widget.onLostFocus != null) {
-        canLostFocus = widget.onLostFocus(widget.child);
+        canLostFocus = widget.onLostFocus(widget.child) == true;
       }
-      print('canLostFocus $canLostFocus');
       final children = <Widget>[
         Listener(
           behavior: HitTestBehavior.translucent,
           onPointerDown: (PointerDownEvent e) {
-            if (widget.onLostFocus != null &&
-                widget.onLostFocus(widget.child) == false) {
-              return;
-            }
-            if (rect.contains(e.position) == false) {
-              print('超出');
-              if (widget.justHideKeyboard) {
-                SystemChannels.textInput.invokeMethod('TextInput.hide');
-              } else {
-                widget.focusNode?.unfocus();
+            if (widget.onLostFocus == null ||
+                widget.onLostFocus(widget.child) == true) {
+              if (rect.contains(e.position) == false) {
+                // print('超出');
                 _removeOverlay();
+                widget.focusNode?.unfocus();
+                // SystemChannels.textInput.invokeMethod('TextInput.hide');
               }
             }
           },
@@ -140,7 +128,7 @@ class FocusWidgetState extends State<FocusWidget> {
     return NotificationListener<LayoutChangedNotification>(
       child: widget.child,
       onNotification: (LayoutChangedNotification notification) {
-//        print('notification $notification');
+        // print('notification $notification');
         update();
         return true;
       },

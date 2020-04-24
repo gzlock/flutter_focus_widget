@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         Locale.fromSubtags(languageCode: 'zh'),
         Locale.fromSubtags(languageCode: 'en'),
       ],
-      home: MyHomePage(title: 'Focus Widget Demo Page'),
+      home: MyHomePage(title: 'Demo'),
     );
   }
 }
@@ -38,40 +38,26 @@ class DemoLocalizations {
 
   static Map<String, Map<String, String>> _localizedValues = {
     'en': {
-      'tips': 'When the FocusWidget has focus,\n'
-          'Trigger the PointerDown event outside the FocusWidget area\n'
-          'Will make FocusWidget lose focus\n'
-          'and trigger the FocusNode listener\n',
-      'parameters': 'Parameters: \n'
-          '\t\t\tshowFocusArea: display a red rectangle it mean the focus area\n'
-          '\t\t\tjustHideKeyboard: tap outside of the input, just hide the keyboard\n',
-      'address': 'Address',
-      'name': 'name',
-      'justHide': 'Just hide the keyboard, keep it has focus'
+      'normal': 'Normal',
+      'showFocusArea': 'showFocusArea',
+      'onLostFocus': 'onLostFocus event',
+      'isEmpty': 'This input can not be empty',
     },
     'zh': {
-      'tips': '当输入框获得焦点后，\n'
-          '在FocusWidget域外触发PointerDown\n'
-          '会让FocusWidget失去焦点'
-          '并且触发FocusNode的listener',
-      'parameters': '参数：\n'
-          '\t\t\tshowFocusArea：显示一个淡红色方框高亮焦点区域\n'
-          '\t\t\tjustHideKeyboard：隐藏键盘后让输入框保持获得焦点的样子',
-      'address': '地址',
-      'name': '名称',
-      'justHide': '只隐藏键盘，保持焦点'
+      'normal': '正常模式',
+      'showFocusArea': '显示半透明红色的焦点区域',
+      'onLostFocus': 'onLostFocus事件',
+      'isEmpty': '这个输入框不能为空',
     },
   };
 
-  String get address => _localizedValues[locale]['address'];
+  String get normal => _localizedValues[locale]['normal'];
 
-  String get name => _localizedValues[locale]['name'];
+  String get showFocusArea => _localizedValues[locale]['showFocusArea'];
 
-  String get tips => _localizedValues[locale]['tips'];
+  String get onLostFocus => _localizedValues[locale]['onLostFocus'];
 
-  String get justHide => _localizedValues[locale]['justHide'];
-
-  String get parameters => _localizedValues[locale]['parameters'];
+  String get isEmpty => _localizedValues[locale]['isEmpty'];
 }
 
 class MyHomePage extends StatefulWidget {
@@ -125,36 +111,16 @@ class _MyHomePageState extends State<MyHomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            height: 100,
-            child: Center(
-              child: Text.rich(
-                TextSpan(
-                  children: [
-//                    TextSpan(text: language.tips),
-                    TextSpan(
-                        text: language.parameters,
-                        style: TextStyle(
-                          color: Colors.blue,
-                        )),
-                  ],
-                ),
-                style: TextStyle(fontSize: 18),
-                textWidthBasis: TextWidthBasis.longestLine,
-              ),
-            ),
-          ),
           Padding(
             padding: EdgeInsets.only(left: 20, right: 20),
             child: Container(
               width: 100,
               child: FocusWidget(
-                showFocusArea: true,
                 focusNode: _address,
                 child: TextField(
                   focusNode: _address,
                   decoration: InputDecoration(
-                      hintText: language.name, labelText: language.name),
+                      hintText: language.normal, labelText: language.normal),
                 ),
               ),
             ),
@@ -163,26 +129,14 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: EdgeInsets.only(left: 20, right: 20),
             child: FractionallySizedBox(
               widthFactor: 0.6,
-              child: FocusWidget(
-                focusNode: _name,
-                child: TextField(
-                  focusNode: _name,
+              child: FocusWidget.builder(
+                context,
+                showFocusArea: true,
+                builder: (_, FocusNode focusNode) => TextField(
+                  focusNode: focusNode,
                   decoration: InputDecoration(
-                      hintText: language.address, labelText: language.address),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: FocusWidget.builder(
-              context,
-              justHideKeyboard: true,
-              builder: (context, FocusNode focusNode) => TextField(
-                focusNode: focusNode,
-                decoration: InputDecoration(
-                  hintText: language.justHide,
-                  labelText: 'FocusWidget.builder',
+                      hintText: language.showFocusArea,
+                      labelText: language.showFocusArea),
                 ),
               ),
             ),
@@ -192,7 +146,8 @@ class _MyHomePageState extends State<MyHomePage> {
             child: FocusWidget.builder(
               context,
               onLostFocus: (_) {
-                print('email is empty: ${_email.text.isEmpty}');
+                print('input is empty: ${_email.text.isEmpty}');
+                setState(() {});
                 return _email.text.isNotEmpty;
               },
               builder: (context, FocusNode focusNode) {
@@ -200,20 +155,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   controller: _email,
                   focusNode: focusNode,
                   decoration: InputDecoration(
-                    hintText: 'Email',
-                    labelText: 'Email',
+                    hintText: language.onLostFocus,
+                    labelText: language.onLostFocus,
+                    errorText: _email.text.isEmpty ? language.isEmpty : null,
                   ),
                 );
               },
             ),
-          ),
-          RaisedButton(
-            color: Colors.blue,
-            textColor: Colors.white,
-            child: Text('Open Drawer'),
-            onPressed: () {
-              _scaffold.currentState.openDrawer();
-            },
           ),
         ],
       ),

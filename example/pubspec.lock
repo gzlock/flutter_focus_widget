@@ -85,7 +85,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "1.0.1+2"
+    version: "1.0.2"
   image:
     dependency: transitive
     description:
@@ -100,13 +100,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.16.0"
-  keyboard_visibility:
-    dependency: transitive
-    description:
-      name: keyboard_visibility
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.6"
   matcher:
     dependency: transitive
     description:
@@ -219,4 +212,3 @@ packages:
     version: "3.5.0"
 sdks:
   dart: ">=2.4.0 <3.0.0"
-  flutter: ">=0.1.4 <2.0.0"

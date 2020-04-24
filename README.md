@@ -2,17 +2,17 @@
 
 ### 一个可以让FocusNode失去焦点的Widget
 
-### A focusable and blurable widget of use the FocusNode.
+### A focusable and blurable widget of based on the FocusNode.
 
 - 当FocusWidget获得焦点后
 
-    在FocusWidget区域外触发PointerDown事件
+    在FocusWidget区域外点击
 
     会调用FocusNode.unfocus()并且触发FocusNode的listener
 
 - When the FocusWidget had focus
 
-    Tap this FocusWidget outside area
+    Tap outside the FocusWidget area
 
     Will call the FocusNode's unfocus method and trigger the FocusNode's listener
 
