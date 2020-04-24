@@ -50,7 +50,6 @@ class FocusWidgetState extends State<FocusWidget> {
   @override
   void initState() {
     super.initState();
-//    widget.focusNode.addListener(update);
     widget.focusNode.addListener(update);
   }
 
@@ -61,7 +60,7 @@ class FocusWidgetState extends State<FocusWidget> {
   }
 
   void update() {
-    print('update');
+    // print('update');
     final RenderBox renderBox = context.findRenderObject();
     final size = renderBox.size;
     final offset = renderBox.localToGlobal(Offset.zero);
@@ -77,14 +76,14 @@ class FocusWidgetState extends State<FocusWidget> {
   void _createOverlay() {
     _removeOverlay();
     if (widget.focusNode.hasFocus) {
-      print('has focus');
+      // print('has focus');
       final children = <Widget>[
         Listener(
           behavior: HitTestBehavior.translucent,
           onPointerDown: (PointerDownEvent e) {
-            print('onPointerDown');
+            // print('onPointerDown');
             if (rect.contains(e.position) == false) {
-              print('超出');
+              // print('超出');
               widget.focusNode?.unfocus();
               if (widget.onLostFocus != null)
                 widget.onLostFocus(widget.child, widget.focusNode);
@@ -125,7 +124,7 @@ class FocusWidgetState extends State<FocusWidget> {
     return NotificationListener<LayoutChangedNotification>(
       child: widget.child,
       onNotification: (LayoutChangedNotification notification) {
-        print('notification $notification');
+        // print('notification $notification');
         update();
         return true;
       },
