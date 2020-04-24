@@ -6,14 +6,20 @@
 
 - 新增的参数：
     - bool showFocusArea
+    
         使用一个半透明的红色方框显示焦点区域，主要用于调试。
-    - void Function(Widget widget) onLostFocus 
+        
+    - void Function(Widget widget, FocusNode focusNode) onLostFocus 
+    
         失去焦点后会调用这个function。
 
 - New Parameters:
     - bool showFocusArea
+    
         Display a translucent red box to show the focus area, it's for debug.
-    - void Function(Widget widget) onLostFocus 
+        
+    - void Function(Widget widget, FocusNode focusNode) onLostFocus 
+    
         When lost focus invoke this function.
 
 - 当FocusWidget获得焦点后
