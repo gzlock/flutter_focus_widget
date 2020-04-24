@@ -145,10 +145,10 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: EdgeInsets.only(left: 20, right: 20),
             child: FocusWidget.builder(
               context,
-              onLostFocus: (_) {
+              showFocusArea: true,
+              onLostFocus: (_, focusNode) {
                 print('input is empty: ${_email.text.isEmpty}');
                 setState(() {});
-                return _email.text.isNotEmpty;
               },
               builder: (context, FocusNode focusNode) {
                 return TextField(

@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 
 typedef FocusNodeBuilder = Widget Function(
     BuildContext context, FocusNode focusNode);
-typedef OnLostFocus = bool Function(Widget widget);
+typedef OnLostFocus = void Function(Widget widget, FocusNode focusNode);
 
 class FocusWidget extends StatefulWidget {
   final FocusNode focusNode;
@@ -61,7 +61,7 @@ class FocusWidgetState extends State<FocusWidget> {
   }
 
   void update() {
-    if (!widget.focusNode.hasFocus) return;
+    print('update');
     final RenderBox renderBox = context.findRenderObject();
     final size = renderBox.size;
     final offset = renderBox.localToGlobal(Offset.zero);
@@ -77,29 +77,26 @@ class FocusWidgetState extends State<FocusWidget> {
   void _createOverlay() {
     _removeOverlay();
     if (widget.focusNode.hasFocus) {
-      bool canLostFocus = true;
-      if (widget.onLostFocus != null) {
-        canLostFocus = widget.onLostFocus(widget.child) == true;
-      }
+      print('has focus');
       final children = <Widget>[
         Listener(
           behavior: HitTestBehavior.translucent,
           onPointerDown: (PointerDownEvent e) {
-            if (widget.onLostFocus == null ||
-                widget.onLostFocus(widget.child) == true) {
-              if (rect.contains(e.position) == false) {
-                // print('超出');
-                _removeOverlay();
-                widget.focusNode?.unfocus();
-                // SystemChannels.textInput.invokeMethod('TextInput.hide');
-              }
+            print('onPointerDown');
+            if (rect.contains(e.position) == false) {
+              print('超出');
+              widget.focusNode?.unfocus();
+              if (widget.onLostFocus != null)
+                widget.onLostFocus(widget.child, widget.focusNode);
+              SystemChannels.textInput.invokeMethod('TextInput.hide');
+              _removeOverlay();
             }
           },
-          child: canLostFocus
-              ? null
-              : Container(
-                  color: Colors.transparent,
-                ),
+//          child: canLostFocus
+//              ? null
+//              : Container(
+//                  color: Colors.transparent,
+//                ),
         ),
       ];
       if (widget.showFocusArea) {
@@ -128,7 +125,7 @@ class FocusWidgetState extends State<FocusWidget> {
     return NotificationListener<LayoutChangedNotification>(
       child: widget.child,
       onNotification: (LayoutChangedNotification notification) {
-        // print('notification $notification');
+        print('notification $notification');
         update();
         return true;
       },
