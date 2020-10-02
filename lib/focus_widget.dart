@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 typedef FocusNodeBuilder = Widget Function(
     BuildContext context, FocusNode focusNode);
@@ -18,7 +18,8 @@ class FocusWidget extends StatefulWidget {
     @required this.focusNode,
     this.showFocusArea = false,
     this.onLostFocus,
-  })  : assert(child != null && focusNode != null),
+  })  : assert(child != null),
+        assert(focusNode != null),
         super(key: key);
 
   @override
@@ -30,6 +31,7 @@ class FocusWidget extends StatefulWidget {
     showFocusArea = false,
     OnLostFocus onLostFocus,
   }) {
+    // print('builder area $showFocusArea');
     final focusNode = FocusNode();
     return FocusWidget(
       focusNode: focusNode,
@@ -49,8 +51,17 @@ class FocusWidgetState extends State<FocusWidget> {
 
   @override
   void initState() {
-    super.initState();
+    // print('state init');
     widget.focusNode.addListener(update);
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(FocusWidget oldWidget) {
+    // print('didUpdateWidget');
+    widget.focusNode.removeListener(update);
+    widget.focusNode.addListener(update);
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -80,22 +91,21 @@ class FocusWidgetState extends State<FocusWidget> {
       final children = <Widget>[
         Listener(
           behavior: HitTestBehavior.translucent,
-          onPointerDown: (PointerDownEvent e) {
+          onPointerMove: (e) {
+            final scope = FocusScope.of(context);
+            scope.unfocus();
+          },
+          onPointerUp: (e) {
             // print('onPointerDown');
             if (rect.contains(e.position) == false) {
               // print('超出');
-              widget.focusNode?.unfocus();
+              final scope = FocusScope.of(context);
+              scope.unfocus();
               if (widget.onLostFocus != null)
                 widget.onLostFocus(widget.child, widget.focusNode);
-              SystemChannels.textInput.invokeMethod('TextInput.hide');
               _removeOverlay();
             }
           },
-//          child: canLostFocus
-//              ? null
-//              : Container(
-//                  color: Colors.transparent,
-//                ),
         ),
       ];
       if (widget.showFocusArea) {

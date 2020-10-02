@@ -3,6 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:focus_widget/focus_widget.dart';
 
+import 'localizations.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -27,39 +29,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class DemoLocalizations {
-  DemoLocalizations(this.locale);
-
-  final String locale;
-
-  static DemoLocalizations of(BuildContext context) {
-    return DemoLocalizations(Localizations.localeOf(context).languageCode);
-  }
-
-  static Map<String, Map<String, String>> _localizedValues = {
-    'en': {
-      'normal': 'Normal',
-      'showFocusArea': 'showFocusArea',
-      'onLostFocus': 'onLostFocus event',
-      'isEmpty': 'This input can not be empty',
-    },
-    'zh': {
-      'normal': '正常模式',
-      'showFocusArea': '显示半透明红色的焦点区域',
-      'onLostFocus': 'onLostFocus事件',
-      'isEmpty': '这个输入框不能为空',
-    },
-  };
-
-  String get normal => _localizedValues[locale]['normal'];
-
-  String get showFocusArea => _localizedValues[locale]['showFocusArea'];
-
-  String get onLostFocus => _localizedValues[locale]['onLostFocus'];
-
-  String get isEmpty => _localizedValues[locale]['isEmpty'];
-}
-
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
   final String title;
@@ -69,9 +38,39 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final FocusNode _address = FocusNode(), _name = FocusNode();
+  final FocusNode myFocusNode = FocusNode();
   GlobalKey<ScaffoldState> _scaffold = GlobalKey();
   final TextEditingController _email = TextEditingController();
+  bool checkBoxValue = true;
+
+  Widget leftSideDrawer() {
+    return Drawer(
+      child: SafeArea(
+        child: ListView(
+          padding: EdgeInsets.only(left: 10, right: 10),
+          children: ListTile.divideTiles(
+              context: context,
+              tiles: List.generate(20, (i) {
+                if (i != 5) {
+                  return ListTile(title: Text(i.toString()));
+                }
+                return FocusWidget.builder(
+                  context,
+                  showFocusArea: true,
+                  builder: (ctx, focusNode) => TextField(
+                    focusNode: focusNode,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      hintText: 'Input',
+                      labelText: 'Input',
+                    ),
+                  ),
+                );
+              })).toList(),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,90 +80,112 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      drawer: Drawer(
-        child: SafeArea(
-          child: ListView(
-            padding: EdgeInsets.only(left: 10, right: 10),
-            children: ListTile.divideTiles(
-                context: context,
-                tiles: List.generate(20, (i) {
-                  if (i != 5) {
-                    return ListTile(title: Text(i.toString()));
-                  }
-                  return FocusWidget.builder(
-                    context,
-                    showFocusArea: true,
-                    builder: (ctx, focusNode) => TextField(
-                      focusNode: focusNode,
-                      autofocus: true,
-                      decoration: InputDecoration(
-                        hintText: 'Input',
-                        labelText: 'Input',
-                      ),
+      drawer: leftSideDrawer(),
+      body: ListView(
+        children: ListTile.divideTiles(
+          context: context,
+          tiles: [
+            ListTile(
+              title: TextField(
+                minLines: 2,
+                maxLines: 2,
+                controller: TextEditingController(text:language.standardHint),
+                decoration: InputDecoration(
+                  hintText: language.standardHint,
+                  labelText: language.standardLabel,
+                ),
+              ),
+              subtitle: SizedBox(height: 16),
+              isThreeLine: true,
+            ),
+            ListTile(
+              title: Text('Interactive widgets'),
+              subtitle: Wrap(
+                children: [
+                  RaisedButton(
+                    child: Text(language.button),
+                    onPressed: () {},
+                  ),
+                  Checkbox(
+                    value: checkBoxValue,
+                    onChanged: (value) => setState(
+                      () {
+                        checkBoxValue = value;
+                      },
                     ),
-                  );
-                })).toList(),
-          ),
-        ),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: Container(
-              width: 100,
-              child: FocusWidget(
-                focusNode: _address,
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              title: FocusWidget(
+                focusNode: myFocusNode,
+                showFocusArea: false,
                 child: TextField(
-                  focusNode: _address,
+                  focusNode: myFocusNode,
                   decoration: InputDecoration(
                       hintText: language.normal, labelText: language.normal),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: FractionallySizedBox(
-              widthFactor: 0.6,
-              child: FocusWidget.builder(
+            ListTile(
+              title: FocusWidget.builder(
                 context,
                 showFocusArea: true,
                 builder: (_, FocusNode focusNode) => TextField(
                   focusNode: focusNode,
                   decoration: InputDecoration(
-                      hintText: language.showFocusArea,
-                      labelText: language.showFocusArea),
+                    hintText: language.showFocusArea,
+                    labelText: language.showFocusArea,
+                  ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: FocusWidget.builder(
-              context,
-              showFocusArea: true,
-              onLostFocus: (_, focusNode) {
-                print('input is empty: ${_email.text.isEmpty}');
-                setState(() {});
-              },
-              builder: (context, FocusNode focusNode) {
-                return TextField(
-                  controller: _email,
-                  focusNode: focusNode,
-                  decoration: InputDecoration(
-                    hintText: language.onLostFocus,
-                    labelText: language.onLostFocus,
-                    errorText: _email.text.isEmpty ? language.isEmpty : null,
-                  ),
-                );
-              },
+            ListTile(
+              title: FocusWidget.builder(
+                context,
+                showFocusArea: false,
+                onLostFocus: (_, focusNode) async {
+                  print('input is empty: ${_email.text.isEmpty}');
+                  if (_email.text.isNotEmpty) return;
+                  await showDialog(
+                      context: context,
+                      builder: (_) {
+                        return AlertDialog(
+                          title: Text(language.alertTitle),
+                          content: Text(language.alertContent),
+                        );
+                      });
+                  focusNode.requestFocus();
+                },
+                builder: (context, FocusNode focusNode) {
+                  return TextField(
+                    controller: _email,
+                    focusNode: focusNode,
+                    decoration: InputDecoration(
+                      hintText: language.onLostFocus,
+                      labelText: language.onLostFocus,
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+            SizedBox(height: 1000),
+          ],
+        ).toList(),
       ),
+    );
+  }
+}
+
+class OtherPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Empty Page'),
+      ),
+      body: Center(child: Text('Empty Page')),
     );
   }
 }

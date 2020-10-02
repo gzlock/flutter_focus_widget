@@ -1,6 +1,6 @@
-# example
+# focuswidget_demo
 
-A new Flutter application.
+A demo for the FocusWidget.
 
 ## Getting Started
 
