@@ -13,7 +13,7 @@ class DemoLocalizations {
     'en': {
       'standardLabel': 'TextField',
       'standardHint':
-          'When operating other interactive widgets,\nThe keyboard will not hide.',
+          'When operating with other widgets,\nthe keyboard will not hide.',
       'normal': 'FocusWidget',
       'showFocusArea': 'Show the FocusWidget focus area',
       'onLostFocus': 'onLostFocus event',
@@ -26,7 +26,7 @@ class DemoLocalizations {
     },
     'zh': {
       'standardLabel': 'TextField',
-      'standardHint': '当与其它Widget进行交互式，\n键盘不会隐藏。',
+      'standardHint': '当与其它Widget进行交互时，\n键盘不会隐藏。',
       'normal': 'FocusWidget',
       'showFocusArea': '显示FocusWidget的焦点区域',
       'onLostFocus': 'onLostFocus事件',

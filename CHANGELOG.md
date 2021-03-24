@@ -1,4 +1,6 @@
-## [1.0.4+1] Update to null safety.
+## [1.0.5+1] Updated.
+
+## [1.0.5] Update to null safety.
 
 ## [1.0.4+1] Updated README.md.
 

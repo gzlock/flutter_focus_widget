@@ -90,6 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
           tiles: [
             ListTile(
               title: TextField(
+                autofocus: true,
                 minLines: 2,
                 maxLines: 2,
                 controller: TextEditingController(text: language.standardHint),
@@ -193,8 +194,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 showToast('Lost focus', textPadding: EdgeInsets.all(5));
               },
               showFocusArea: true,
-            ),
-            SizedBox(height: 1000),
+            )
           ],
         ).toList(),
       ),
