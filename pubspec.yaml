@@ -1,10 +1,10 @@
 name: focus_widget
 description: When tap outside of the TextField, let the TextField lose focus.
-version: 1.0.4+1
+version: 1.0.5
 homepage: https://github.com/gzlock/flutter_focus_widget
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:

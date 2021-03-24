@@ -20,6 +20,8 @@ class DemoLocalizations {
       'alertTitle': 'Alert',
       'alertContent':
           'This TextField can not be empty\nTriggered by onLostFocus event',
+      'forListTileTitle': 'Use to without the Textfield widget',
+      'forListTileSubtitle': 'Tap me, then tap outside of the red box',
       'button': 'Button',
     },
     'zh': {
@@ -30,6 +32,8 @@ class DemoLocalizations {
       'onLostFocus': 'onLostFocus事件',
       'alertTitle': '警告',
       'alertContent': '这个输入框不能为空\n通过onLostFocus事件触发',
+      'forListTileTitle': '在没有Textfield的情况下使用',
+      'forListTileSubtitle': '点我一下，然后再点击红框以外的区域',
       'button': '按钮',
     },
   };
@@ -47,5 +51,10 @@ class DemoLocalizations {
   String get alertTitle => _localizedValues[locale]['alertTitle'];
 
   String get alertContent => _localizedValues[locale]['alertContent'];
+
   String get button => _localizedValues[locale]['button'];
+
+  String get forListTileTitle => _localizedValues[locale]['forListTileTitle'];
+  String get forListTileSubtitle =>
+      _localizedValues[locale]['forListTileSubtitle'];
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 typedef FocusNodeBuilder = Widget Function(
     BuildContext context, FocusNode focusNode);
@@ -9,27 +9,25 @@ typedef OnLostFocus = void Function(Widget widget, FocusNode focusNode);
 class FocusWidget extends StatefulWidget {
   final FocusNode focusNode;
   final Widget child;
-  final OnLostFocus onLostFocus;
+  final OnLostFocus? onLostFocus;
   final bool showFocusArea;
 
   const FocusWidget({
-    Key key,
-    @required this.child,
-    @required this.focusNode,
+    Key? key,
+    required this.child,
+    required this.focusNode,
     this.showFocusArea = false,
     this.onLostFocus,
-  })  : assert(child != null),
-        assert(focusNode != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   FocusWidgetState createState() => FocusWidgetState();
 
   static FocusWidget builder(
     BuildContext context, {
-    @required FocusNodeBuilder builder,
+    required FocusNodeBuilder builder,
     showFocusArea = false,
-    OnLostFocus onLostFocus,
+    OnLostFocus? onLostFocus,
   }) {
     // print('builder area $showFocusArea');
     final focusNode = FocusNode();
@@ -46,8 +44,8 @@ class FocusWidget extends StatefulWidget {
 }
 
 class FocusWidgetState extends State<FocusWidget> {
-  OverlayEntry _overlayEntry;
-  Rect rect;
+  OverlayEntry? _overlayEntry;
+  late Rect rect;
 
   @override
   void initState() {
@@ -71,8 +69,7 @@ class FocusWidgetState extends State<FocusWidget> {
   }
 
   void update() {
-    // print('update');
-    final RenderBox renderBox = context.findRenderObject();
+    final renderBox = context.findRenderObject() as RenderBox;
     final size = renderBox.size;
     final offset = renderBox.localToGlobal(Offset.zero);
     rect = Rect.fromLTWH(offset.dx, offset.dy, size.width, size.height);
@@ -102,7 +99,7 @@ class FocusWidgetState extends State<FocusWidget> {
               final scope = FocusScope.of(context);
               scope.unfocus();
               if (widget.onLostFocus != null)
-                widget.onLostFocus(widget.child, widget.focusNode);
+                widget.onLostFocus?.call(widget.child, widget.focusNode);
               _removeOverlay();
             }
           },
@@ -112,10 +109,10 @@ class FocusWidgetState extends State<FocusWidget> {
         children.insert(
             0,
             Positioned.fromRect(
-              child: Container(
-                color: Colors.red.withOpacity(0.2),
-              ),
               rect: rect,
+              child: Container(
+                color: Color(0x60ff0000),
+              ),
             ));
       }
       _overlayEntry = new OverlayEntry(
@@ -125,7 +122,7 @@ class FocusWidgetState extends State<FocusWidget> {
           );
         },
       );
-      Overlay.of(context).insert(_overlayEntry);
+      Overlay.of(context)?.insert(_overlayEntry!);
     }
   }
 

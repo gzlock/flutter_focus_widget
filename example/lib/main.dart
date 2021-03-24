@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:focus_widget/focus_widget.dart';
+import 'package:oktoast/oktoast.dart';
 
 import 'localizations.dart';
 
@@ -10,21 +11,23 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return OKToast(
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          Locale.fromSubtags(languageCode: 'zh'),
+          Locale.fromSubtags(languageCode: 'en'),
+        ],
+        home: MyHomePage(title: 'Demo'),
       ),
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: [
-        Locale.fromSubtags(languageCode: 'zh'),
-        Locale.fromSubtags(languageCode: 'en'),
-      ],
-      home: MyHomePage(title: 'Demo'),
     );
   }
 }
@@ -89,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
               title: TextField(
                 minLines: 2,
                 maxLines: 2,
-                controller: TextEditingController(text:language.standardHint),
+                controller: TextEditingController(text: language.standardHint),
                 decoration: InputDecoration(
                   hintText: language.standardHint,
                   labelText: language.standardLabel,
@@ -102,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text('Interactive widgets'),
               subtitle: Wrap(
                 children: [
-                  RaisedButton(
+                  ElevatedButton(
                     child: Text(language.button),
                     onPressed: () {},
                   ),
@@ -169,6 +172,27 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 },
               ),
+            ),
+            FocusWidget.builder(
+              context,
+              builder: (_, focusNode) {
+                return GestureDetector(
+                  onTap: () {
+                    focusNode.requestFocus();
+                  },
+                  child: Focus(
+                    focusNode: focusNode,
+                    child: ListTile(
+                      title: Text(language.forListTileTitle),
+                      subtitle: Text(language.forListTileSubtitle),
+                    ),
+                  ),
+                );
+              },
+              onLostFocus: (_, focusNode) {
+                showToast('Lost focus', textPadding: EdgeInsets.all(5));
+              },
+              showFocusArea: true,
             ),
             SizedBox(height: 1000),
           ],
