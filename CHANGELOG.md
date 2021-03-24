@@ -1,3 +1,5 @@
+## [1.0.5+2] Updated.
+
 ## [1.0.5+1] Updated.
 
 ## [1.0.5] Update to null safety.
